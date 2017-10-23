@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import xlrd
 import trimestre
-book = xlrd.open_workbook("balanco.xls")
+book = xlrd.open_workbook("../balanco.xls")
 print "Número de abas: ", book.nsheets
 print "Nomes das Planilhas:", book.sheet_names()
 sh = book.sheet_by_index(0)
