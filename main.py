@@ -28,36 +28,122 @@ def writeInvertido(sheet,col,row,value):
 		sheet.write(col-1, row-1, value)			
 		sheet.write(col, row-1, value)
 
-
-
-variaveis = trimestre.Variaveis(21.18,15717600)
-print ("EBIT =" ,variaveis.getEbit(1))
-print ("Lucro Liquido =", variaveis.getLucroLiquido(1))
-print ("Lucro Bruto =", variaveis.getLucroBruto(1))
-print ("Receita liquida =", variaveis.getReceitaLiquida(1))
-print ("Patrimonio Liquido =", variaveis.getPatrimonioLiquido(1))
-print ("Ativo Total =", variaveis.getAtivoTotal(1))
-print ("Ativo Circulante =", variaveis.getAtivoCirculante(1))
-print ("Passivo Circulante =", variaveis.getPassivoCirculante(1))
-print ("Dividas de Curto e Longo prazo =", variaveis.getDividasDeCurtoElongoPrazo(1))
-print ("Dividendos =", variaveis.getDividendos(1))
-print ("Valor de Mercado =", variaveis.getValorMercado())
-print ("Divida Bruta =", variaveis.getDividaBruta(1))
-print ("Disponibilidades =", variaveis.getDisponibilidades(1))
-print ("Divida Liquida =", variaveis.getDividaLiquida(1))
-print ("Valor Firma =", variaveis.getValorFirma(1))
-print ("Caixa =", variaveis.getCaixa(1))
-print ("Fornecedores =", variaveis.getFornecedores(1))
-
+def indicadores(i,row,col,col_data):
+	quantidadeAcoes = 15717600
+	variaveis1 = trimestre.Variaveis(float(cotacoes.cell_value(row,4)),quantidadeAcoes)
+	variaveis2 = trimestre.Variaveis(float(cotacoes.cell_value(row+1,4)),quantidadeAcoes)
+	variaveis3 = trimestre.Variaveis(float(cotacoes.cell_value(row+2,4)),quantidadeAcoes)
+	# P/L
+	if i == 0:	
+		sheet.write(row-1, col, str(variaveis1.getPrecoAcaoPorLucro(col_data)))
+		sheet.write(row, col, str(variaveis2.getPrecoAcaoPorLucro(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getPrecoAcaoPorLucro(col_data)))
+	# P/VP
+	elif i == 1:
+		sheet.write(row-1, col, str(variaveis1.getPrecoAcaoPorPatrimonioLiquidoPorAcao(col_data)))
+		sheet.write(row, col, str(variaveis2.getPrecoAcaoPorPatrimonioLiquidoPorAcao(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getPrecoAcaoPorPatrimonioLiquidoPorAcao(col_data)))
+	# P/EBIT
+	elif i == 2:
+		sheet.write(row-1, col, str(variaveis1.getPrecoAcaoPorEBITUltimo12mesesPorAcao(col_data)))
+		sheet.write(row, col, str(variaveis2.getPrecoAcaoPorEBITUltimo12mesesPorAcao(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getPrecoAcaoPorEBITUltimo12mesesPorAcao(col_data)))
+	# PSR
+	elif i == 3:
+		sheet.write(row-1, col, str(variaveis1.getPrecoAcaoPorReceitaLiquidaPorAcao(col_data)))
+		sheet.write(row, col, str(variaveis2.getPrecoAcaoPorReceitaLiquidaPorAcao(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getPrecoAcaoPorReceitaLiquidaPorAcao(col_data)))
+	# P/Ativos
+	elif i == 4:
+		sheet.write(row-1, col, str(variaveis1.getPrecoAcaoPorAtivosTotais(col_data)))
+		sheet.write(row, col, str(variaveis2.getPrecoAcaoPorAtivosTotais(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getPrecoAcaoPorAtivosTotais(col_data)))
+	# P/Cap. Giro
+	elif i == 5:
+		sheet.write(row-1, col, str(variaveis1.getPrecoAcaoPorCapitalGiroPorAcao(col_data)))
+		sheet.write(row, col, str(variaveis2.getPrecoAcaoPorCapitalGiroPorAcao(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getPrecoAcaoPorCapitalGiroPorAcao(col_data)))	
+	# P/Ativ Circ Liq
+	elif i == 6:
+		sheet.write(row-1, col, str(variaveis1.getPrecoAcaoPorAtivoCirculanteLiquidoPorAcao(col_data)))
+		sheet.write(row, col, str(variaveis2.getPrecoAcaoPorAtivoCirculanteLiquidoPorAcao(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getPrecoAcaoPorAtivoCirculanteLiquidoPorAcao(col_data)))
+	# Div. Yield
+	elif i == 7:
+		sheet.write(row-1, col, str(variaveis1.getDividendoYield(col_data)))
+		sheet.write(row, col, str(variaveis2.getDividendoYield(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getDividendoYield(col_data)))
+	# EV/EBIT
+	elif i == 8:
+		sheet.write(row-1, col, str(variaveis1.getValorDaFirmaPorEBITUltimos12meses(col_data)))
+		sheet.write(row, col, str(variaveis2.getValorDaFirmaPorEBITUltimos12meses(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getValorDaFirmaPorEBITUltimos12meses(col_data)))
+	# Giros Ativos
+	elif i == 9:
+		sheet.write(row-1, col, str(variaveis1.getGirosAtivos(col_data)))
+		sheet.write(row, col, str(variaveis2.getGirosAtivos(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getGirosAtivos(col_data)))
+	# LP (Lucro por acao Ultimos 12 meses)
+	elif i == 10:
+		sheet.write(row-1, col, str(variaveis1.getLucroPorAcao(col_data)))
+		sheet.write(row, col, str(variaveis2.getLucroPorAcao(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getLucroPorAcao(col_data)))
+	# VPA (Patrimonio Liquido por acao)
+	elif i == 11:
+		sheet.write(row-1, col, str(variaveis1.getPatrimonioLiquidoPorAcao(col_data)))
+		sheet.write(row, col, str(variaveis2.getPatrimonioLiquidoPorAcao(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getPatrimonioLiquidoPorAcao(col_data)))	
+	# Marg. Bruta (Lucro Bruto/ Receita Liquida) - ultimos 12 meses
+	elif i == 12:
+		sheet.write(row-1, col, str(variaveis1.getMargBruta(col_data)))
+		sheet.write(row, col, str(variaveis2.getMargBruta(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getMargBruta(col_data)))
+	# Marg. Ebit (EBIT/Receita Liquida) - ultimos 12 meses
+	elif i == 13:
+		sheet.write(row-1, col, str(variaveis1.getMargEBIT(col_data)))
+		sheet.write(row, col, str(variaveis2.getMargEBIT(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getMargEBIT(col_data)))
+	# Marg Liquida (Lucro Liquido/ Receita Liquida) ultimos 12 meses
+	elif i == 14:
+		sheet.write(row-1, col, str(variaveis1.getMargLiquida(col_data)))
+		sheet.write(row, col, str(variaveis2.getMargLiquida(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getMargLiquida(col_data)))
+	# EBIT/ATIVO (EBIT ultimos 12 meses/ Ativos totais ultimo trimestre)
+	elif i == 15:
+		sheet.write(row-1, col, str(variaveis1.getEBITporAtivos(col_data)))
+		sheet.write(row, col, str(variaveis2.getEBITporAtivos(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getEBITporAtivos(col_data)))
+	# ROIC = EBIT ultimos 12 meses/ (Ativos Totais - caixa - fornecedores) ultimo trimestre
+	elif i == 16:
+		sheet.write(row-1, col, str(variaveis1.getROIC(col_data)))
+		sheet.write(row, col, str(variaveis2.getROIC(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getROIC(col_data)))
+	# ROE = Lucro Liquido ultimos 12 meses/ Patrimonio Liquido ultimo trimestre
+	elif i == 17:
+		sheet.write(row-1, col, str(variaveis1.getROE(col_data)))
+		sheet.write(row, col, str(variaveis2.getROE(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getROE(col_data)))
+	# Liquidez Corr (Ativo Circulante/Passivo Circulante)
+	elif i == 18:
+		sheet.write(row-1, col, str(variaveis1.getLiquidezCorr(col_data)))
+		sheet.write(row, col, str(variaveis2.getLiquidezCorr(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getLiquidezCorr(col_data)))
+	# Div Br / Patrim (Divida Bruta / Patrimonio Liquido)
+	elif i == 19:
+		sheet.write(row-1, col, str(variaveis1.getDividaBrutaPorPatrimonioLiquido(col_data)))
+		sheet.write(row, col, str(variaveis2.getDividaBrutaPorPatrimonioLiquido(col_data)))
+		sheet.write(row+1, col, str(variaveis3.getDividaBrutaPorPatrimonioLiquido(col_data)))
 
 
 planilhaBalanco = xlrd.open_workbook("../balanco.xls")
 balanco = planilhaBalanco.sheet_by_index(0)
 demonstrativo = planilhaBalanco.sheet_by_index(1)
+planilhaCotacao = xlrd.open_workbook("../AMBEV3_cotacao.xlsx")
+cotacoes = planilhaCotacao.sheet_by_index(0)
 
-planilha = xlwt.Workbook(encoding = 'utf-8')
+planilhaSaida = xlwt.Workbook(encoding = 'utf-8')
 
-sheet = planilha.add_sheet('indicadores')
+sheet = planilhaSaida.add_sheet('indicadores')
 
 for curr_col in range(balanco.ncols):
 	for curr_row in range(1,balanco.nrows):	
@@ -68,6 +154,19 @@ for curr_col in range(demonstrativo.ncols):
 		row = curr_row + balanco.nrows - 2
 		writeInvertido(sheet,curr_col,row,demonstrativo.cell_value(curr_row,curr_col))
 
-planilha.save('indicadores.xls')
+indicadores_cabecalho = ["P/L","P/VP","P/EBIT","PSR","P/Ativos","P/Cap. Giro","P/Ativ Circ Liq","Div. Yield","EV/EBIT","Giros Ativos","LP","VPA","Marg. Bruta","Marg. EBIT","Marg. Liquida","EBIT/ATIVO","ROIC","ROE","Liquidez Corr","Div br/Patrim"]
+
+for i in range(len(indicadores_cabecalho)):
+  	indicador_nome = indicadores_cabecalho[i]
+  	col = i + balanco.nrows + demonstrativo.nrows - 3
+  	sheet.write(0, col, indicador_nome)
+  	col_data = 0
+  	for curr_row in range(2,43,3):
+  		col_data+=1
+  		indicadores(i,curr_row,col,col_data)
+ 	
+
+
+planilhaSaida.save('indicadores.xls')
 
 

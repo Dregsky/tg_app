@@ -101,7 +101,7 @@ class Variaveis:
 		return self.getCapitalDeGiro(coluna)/self.quantidadeAcoes
 
 	def getAtivoCirculanteLiquido(self,coluna):
-		return self.getAtivoCirculante(coluna) - getDividasDeCurtoElongoPrazo(coluna)
+		return self.getAtivoCirculante(coluna) - self.getDividasDeCurtoElongoPrazo(coluna)
 
 	def getAtivoCirculanteLiquidoPorAcao(self,coluna):
 		return self.getAtivoCirculanteLiquido(coluna)/self.quantidadeAcoes
@@ -203,7 +203,7 @@ class Variaveis:
 
 	# Div. Yield
 	def getDividendoYield(self,coluna):
-		return self.getDividendoPorAcao(coluna)/self.contacao
+		return self.getDividendoPorAcao(coluna)/self.cotacao
 
 	# EV/EBIT
 	def getValorDaFirmaPorEBITUltimos12meses(self,coluna):
