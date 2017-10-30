@@ -40,7 +40,6 @@ class Variaveis:
 		self.cotacao = cotacao
 		self.quantidadeAcoes = quantidadeAcoes
 
-
 	def getEbit(self,coluna):
 		return demonstrativo.cell_value(6,coluna)+demonstrativo.cell_value(7,coluna)+demonstrativo.cell_value(8,coluna)
 
@@ -92,9 +91,6 @@ class Variaveis:
 	def getFornecedores(self,coluna):
 		return balanco.cell_value(29,coluna)
 
-	def getPatrimonioLiquidoPorAcao(self,coluna):
-		return self.getPatrimonioLiquido(coluna)/self.quantidadeAcoes
-
 	def getAtivosTotaisPorAcao(self,coluna):
 		return self.getAtivoTotal(coluna)/self.quantidadeAcoes
 
@@ -113,18 +109,14 @@ class Variaveis:
 	def getDividendoPorAcao(self,coluna):
 		return self.getDividendos(coluna)/self.quantidadeAcoes
 
-	# Lucro Liquido nos últimos 12 meses
+	# Lucro Liquido nos ultimos 12 meses
 	def getLucroLiquidoUltimos12meses(self,coluna):
 		return self.getLucroLiquido(coluna) + self.getLucroLiquido(coluna+1) + self.getLucroLiquido(coluna+2) + self.getLucroLiquido(coluna+3) 
-	
-	# Lucro por ação nos últimos 12 meses
-	def getLucroPorAcao(self,coluna):
-		return self.getLucroLiquidoUltimos12meses(coluna)/self.quantidadeAcoes
 
 	def getReceitaLiquidaUltimos12meses(self,coluna):
 		return self.getReceitaLiquida(coluna) + self.getReceitaLiquida(coluna+1) + self.getReceitaLiquida(coluna+2) + self.getReceitaLiquida(coluna+3)
 	
-	# Receita Liquida por ação nos últimos 12 meses
+	# Receita Liquida por acao nos ultimos 12 meses
 	def getReceitaLiquidaPorAcao(self,coluna):
 		return self.getReceitaLiquidaUltimos12meses(coluna)/self.quantidadeAcoes
 
@@ -138,6 +130,48 @@ class Variaveis:
 		return self.getLucroBruto(coluna) + self.getLucroBruto(coluna+1) + self.getLucroBruto(coluna+2) + self.getLucroBruto(coluna+3)
 
 	# INDICADORES FUNDAMENTALISTAS
+
+	# LP (Lucro por acao Ultimos 12 meses)
+	def getLucroPorAcao(self,coluna):
+		return self.getLucroLiquidoUltimos12meses(coluna)/self.quantidadeAcoes
+
+	# VPA (Patrimonio Liquido por acao)
+	def getPatrimonioLiquidoPorAcao(self,coluna):
+		return self.getPatrimonioLiquido(coluna)/self.quantidadeAcoes
+
+	# Marg. Bruta (Lucro Bruto/ Receita Liquida) - ultimos 12 meses
+	def getMargBruta(self,coluna):
+		return self.getLucroBrutoUltimos12meses(coluna)/self.getReceitaLiquidaUltimos12meses(coluna)
+
+	# Marg. Ebit (EBIT/Receita Liquida) - ultimos 12 meses
+	def getMargEBIT(self,coluna):
+		return self.getEbitUltimos12meses(coluna)/self.getReceitaLiquidaUltimos12meses(coluna)
+	
+	# Marg Liquida (Lucro Liquido/ Receita Liquida) ultimos 12 meses
+	def getMargLiquida(self,coluna):
+		return self.getLucroLiquidoUltimos12meses(coluna)/self.getReceitaLiquidaUltimos12meses(coluna)
+
+	# EBIT/ATIVO (EBIT ultimos 12 meses/ Ativos totais ultimo trimestre)
+	def getEBITporAtivos(self,coluna):
+		return self.getEbitUltimos12meses(coluna)/self.getAtivoTotal(coluna)
+
+	# ROIC = EBIT ultimos 12 meses/ (Ativos Totais - caixa - fornecedores) ultimo trimestre
+	def getROIC(self,coluna):
+		return self.getEbitUltimos12meses(coluna)/(self.getAtivoTotal(coluna)-self.getCaixa(coluna)-self.getFornecedores(coluna))
+
+	# ROE = Lucro Liquido ultimos 12 meses/ Patrimonio Liquido ultimo trimestre
+	def getROE(self,coluna):
+		return self.getLucroLiquidoUltimos12meses(coluna)/self.getPatrimonioLiquido(coluna)
+	
+	# Liquidez Corr (Ativo Circulante/Passivo Circulante)
+	def getLiquidezCorr(self,coluna):
+		return self.getAtivoCirculante(coluna)/self.getPassivoCirculante(coluna)
+	
+	# Div Br / Patrim (Divida Bruta / Patrimonio Liquido)
+	def getDividaBrutaPorPatrimonioLiquido(self,coluna):
+		return self.getDividaBruta(coluna)/self.getPatrimonioLiquido(coluna)
+
+	#####################
 
 	# P/L
 	def getPrecoAcaoPorLucro(self,coluna):
@@ -167,4 +201,15 @@ class Variaveis:
 	def getPrecoAcaoPorAtivoCirculanteLiquidoPorAcao(self,coluna):
 		return self.cotacao/self.getAtivoCirculanteLiquidoPorAcao(coluna)
 
-		
+	# Div. Yield
+	def getDividendoYield(self,coluna):
+		return self.getDividendoPorAcao(coluna)/self.contacao
+
+	# EV/EBIT
+	def getValorDaFirmaPorEBITUltimos12meses(self,coluna):
+		return self.getValorFirma(coluna)/self.getEbitUltimos12meses(coluna)
+
+	# Giros Ativos	
+	def getGirosAtivos(self,coluna):
+		return self.getReceitaLiquidaUltimos12meses(coluna)/self.getAtivoTotal(coluna)
+

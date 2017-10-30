@@ -1,15 +1,33 @@
 import trimestre
 import xlwt
 import xlrd
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
+def last_day_of_month(any_day):
+    next_month = any_day.replace(day=28) + relativedelta(days=4)  # this will never fail
+    return next_month - relativedelta(days=next_month.day)
 
 def writeInvertido(sheet,col,row,value):
 	if col == 0:
 		sheet.write(col, row-1, value)			
+	# se for na linha da data
+	elif row == 1:
+		col = col * 3
+		ultimo_mes_trimestre = datetime.strptime(value, '%d/%m/%Y').date()
+		primeiro_mes_trimestre = ultimo_mes_trimestre - relativedelta(months=2)
+		segundo_mes_trimestre = ultimo_mes_trimestre - relativedelta(months=1)
+		primeiro_mes_trimestre = last_day_of_month(primeiro_mes_trimestre)
+		segundo_mes_trimestre = last_day_of_month(segundo_mes_trimestre)
+		sheet.write(col, row-1, primeiro_mes_trimestre.strftime('%d/%m/%Y'))			
+		sheet.write(col-1, row-1, segundo_mes_trimestre.strftime('%d/%m/%Y'))			
+		sheet.write(col-2, row-1, value)
 	else:	
 		col = col * 3
 		sheet.write(col-2, row-1, value)			
 		sheet.write(col-1, row-1, value)			
-		sheet.write(col, row-1, value)			
+		sheet.write(col, row-1, value)
+
 
 
 variaveis = trimestre.Variaveis(21.18,15717600)
