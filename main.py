@@ -1,4 +1,4 @@
-import trimestre
+import trimestre,sql
 import xlwt
 import xlrd
 from datetime import datetime
@@ -29,7 +29,6 @@ def writeInvertido(sheet,col,row,value):
 		sheet.write(col, row-1, value)
 
 def indicadores(i,row,col,col_data):
-	quantidadeAcoes = 15717600
 	variaveis1 = trimestre.Variaveis(float(cotacoes.cell_value(row,4)),quantidadeAcoes)
 	variaveis2 = trimestre.Variaveis(float(cotacoes.cell_value(row+1,4)),quantidadeAcoes)
 	variaveis3 = trimestre.Variaveis(float(cotacoes.cell_value(row+2,4)),quantidadeAcoes)
@@ -135,15 +134,18 @@ def indicadores(i,row,col,col_data):
 		sheet.write(row+1, col, str(variaveis3.getDividaBrutaPorPatrimonioLiquido(col_data)))
 
 
-planilhaBalanco = xlrd.open_workbook("../balanco.xls")
+nomeEmpresa = trimestre.nomeEmpresa()
+planilhaBalanco = xlrd.open_workbook("balanco/"+nomeEmpresa+".xls")
 balanco = planilhaBalanco.sheet_by_index(0)
 demonstrativo = planilhaBalanco.sheet_by_index(1)
-planilhaCotacao = xlrd.open_workbook("../AMBEV3_cotacao.xlsx")
+planilhaCotacao = xlrd.open_workbook("cotacao/"+nomeEmpresa+".xlsx")
 cotacoes = planilhaCotacao.sheet_by_index(0)
 
 planilhaSaida = xlwt.Workbook(encoding = 'utf-8')
 
-sheet = planilhaSaida.add_sheet('indicadores')
+sheet = planilhaSaida.add_sheet('dados_e_indicadores')
+
+quantidadeAcoes = balanco.cell_value(1,0)
 
 for curr_col in range(balanco.ncols):
 	for curr_row in range(1,balanco.nrows):	
@@ -166,7 +168,7 @@ for i in range(len(indicadores_cabecalho)):
   		indicadores(i,curr_row,col,col_data)
  	
 
+planilhaSaida.save("empresa_dados_mes_ano/"+nomeEmpresa+".xls")
 
-planilhaSaida.save('indicadores.xls')
-
-
+sql.insertEmpresa(nomeEmpresa,quantidadeAcoes)
+sql.insertDadosEmpresaMesAno(nomeEmpresa)

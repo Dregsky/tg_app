@@ -1,38 +1,11 @@
 import xlrd
-planilhaBalanco = xlrd.open_workbook("../balanco.xls")
+
+def nomeEmpresa():
+	return 'camb4'
+
+planilhaBalanco = xlrd.open_workbook("balanco/"+nomeEmpresa()+".xls")
 balanco = planilhaBalanco.sheet_by_index(0)
 demonstrativo = planilhaBalanco.sheet_by_index(1)
-class Trimestre:
-
-	def __init__(self, data, ativoTotal, ativoCirculante, caixaEequivalentesDeCaixa, aplicacaoFinanceira, contasAreceber, estoques):
-		self.data = data
-		self.ativoTotal = ativoTotal
-		self.ativoCirculante = ativoCirculante
-		self.caixaEequivalentesDeCaixa = caixaEequivalentesDeCaixa
-		self.aplicacaoFinanceira = aplicacaoFinanceira
-		self.contasAreceber = contasAreceber
-		self.estoques = estoques
-
-	def getData(self):
-		return self.data
-
-	def getAtivoTotal(self):
-		return self.ativoTotal
-
-	def getAtivoCirculante(self):
-		return self.ativoCirculante
-
-	def getCaixaEequivalenciaDeCaixa(self):
-		return self.caixaEequivalentesDeCaixa
-
-	def getAplicacaoFinanceira(self):
-		return self.aplicacaoFinanceira
-
-	def getContasAreceber(self):
-		return self.contasAreceber
-
-	def getEstoques(self):
-		return self.estoques
 
 class Variaveis:
 
